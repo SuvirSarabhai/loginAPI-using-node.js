@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verification</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/97ebdf5864.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Verification</h2>
+
+      
+        <form onsubmit="sendotp(event)">
+            <div class="form-group">
+                <input type="email" id="loginEmail" required>
+                <label for="">Email</label>
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+
+          
+            <button id="btn" type="submit">Send OTP</button>
+
+            <p>Didn't receive your otp? <a href="#" onclick="resendotp(event)">Resend</a></p>
+        </form>
+
+
+         <form onsubmit="verifyotp(event)">
+           <div class="form-group">
+                <input type="email" id="verifyEmail" required>
+                <label for="">Email</label>
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+            <div class="form-group">
+                <input type="text" id="loginOTP" required>
+                <label for="">OTP</label>
+            </div>
+ 
+          
+            <button id="btn" type="submit">Verify</button>
+
+            
+        </form>
+    </div>
+
+    <script>
+        const baseURL = "http://localhost:3000"; 
+
+        function sendotp(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("loginEmail").value;
+      
+
+            fetch(`${baseURL}/users/login/send-otp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email}),
+            })
+                .then(res => {
+                    if (res.ok) {
+                        
+                        alert("OTP sent!");
+                    } else {
+                        alert("Can't send otp, check your email id");
+                    }
+                })
+                .catch(err => {
+                    alert("Login error: " + err);
+                });
+        }
+
+        function resendotp(event) {
+            event.preventDefault();
+            const email = document.getElementById("loginEmail").value;
+
+            const otp = document.getElementById("loginOTP").value;
+      
+
+            fetch(`${baseURL}/users/login/resend-otp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email}),
+            })
+                .then(res => {
+                    if (res.ok) {
+                        
+                        alert("OTP sent!");
+                    } else {
+                        alert("Can't send otp, check your email id");
+                    }
+                })
+                .catch(err => {
+                    alert("Login error: " + err);
+                });
+        }
+        function verifyotp(event) {
+            event.preventDefault();
+            const email = document.getElementById("verifyEmail").value;
+
+            const otp = document.getElementById("loginOTP").value;
+      
+
+            fetch(`${baseURL}/users/login/resend-otp`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({email, otp}),
+            })
+                .then(res => {
+                    if (res.ok) {
+                        
+                        alert("OTP verified!");
+                    } else {
+                        alert("Email or OTP entered is incorrect!");
+                    }
+                })
+                .catch(err => {
+                    alert("Login error: " + err);
+                });
+        }
+    </script>
+</body>
+
+</html>

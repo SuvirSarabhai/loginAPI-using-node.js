@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/97ebdf5864.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Login</h2>
+
+
+        <form onsubmit="login(event)">
+            <div class="form-group">
+                <input type="email" id="loginEmail" required>
+                <label for="">Email</label>
+                <i class="fa-solid fa-envelope"></i>
+            </div>
+
+            <div class="form-group">
+                <input type="password" id="loginPassword" required>
+                <label for="">Password</label>
+                <i class="fa-solid fa-lock"></i>
+            </div>
+
+            <p><input type="checkbox"> Remember Me <a href="#" >Forget Password?</a></p>
+
+
+            <button id="btn" type="submit">Login</button>
+
+            <p>Don't have an account? <a href="#">Register</a></p>
+        </form>
+    </div>
+
+    <script>
+        const baseURL = "http://localhost:3000";
+
+        function login(event) {
+            event.preventDefault();
+
+            const email = document.getElementById("loginEmail").value;
+            const password = document.getElementById("loginPassword").value;
+
+            fetch(`${baseURL}/users/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            })
+                .then(res => {
+                    if (res.ok) {
+
+                        window.location.href = "success.html";
+                    } else {
+                        alert("Login failed. Check your credentials.");
+                    }
+                })
+                .catch(err => {
+                    alert("Login error: " + err);
+                });
+        }
+
+               
+    </script>
+</body>
+
+</html>
